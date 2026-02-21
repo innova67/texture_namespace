@@ -34,7 +34,7 @@ RP/entity/crab_mech.json  →  "textures/chillcraft/mechs/entity/crab_mech/crab_
 ```json
 "filterDefinitions": {
     "texture_namespace": {
-        "url": "github.com/innova67/regolith-filters/texture_namespace",
+        "url": "github.com/innova67/texture_namespace",
         "version": "1.0.0"
     }
 }
