@@ -1,0 +1,11 @@
+{
+	"description": "Reorganizes RP textures under a namespaced folder (textures/<studio>/<project>/) and updates all JSON path references to match. Runs on the build copy — source files in packs/ are not modified.",
+	"filters": [
+		{
+			"name": "Texture Namespace Organizer",
+			"runWith": "python",
+			"script": "./main.py"
+		}
+	],
+	"version": "1.0.0"
+}
