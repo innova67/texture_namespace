@@ -63,8 +63,11 @@ def update_json_file(file_path: Path, mapping: dict) -> bool:
 
     original = content
     for old_path, new_path in mapping.items():
-        # Match the path as a quoted JSON string value
+        # Match the path without extension
         content = content.replace(f'"{old_path}"', f'"{new_path}"')
+        # Also match paths that include the file extension (e.g. "textures/items/foo.png")
+        for ext in IMAGE_EXTENSIONS:
+            content = content.replace(f'"{old_path}{ext}"', f'"{new_path}{ext}"')
 
     if content != original:
         file_path.write_text(content, encoding='utf-8')
