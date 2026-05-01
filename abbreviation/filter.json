@@ -1,0 +1,10 @@
+{
+	"description": "Reduces JSON filenames in BP and RP to at most 5-letter abbreviations. Strips common suffixes (.behavior, .animation, etc.), uses initials for compound names and first/mid/last letters for single words. Resolves collisions by appending a counter.",
+	"filters": [
+		{
+			"name": "abbreviation",
+			"runWith": "python",
+			"script": "./main.py"
+		}
+	]
+}
