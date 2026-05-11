@@ -1,0 +1,10 @@
+{
+  "description": "Validates BP and RP against Chillcraft's Minecraft Marketplace Partner Program rules: manifest structure, namespace conventions, texture paths, file count and size limits, and experimental feature restrictions.",
+  "filters": [
+    {
+      "name": "chillcraft_lint",
+      "runWith": "nodejs",
+      "script": "main.js"
+    }
+  ]
+}

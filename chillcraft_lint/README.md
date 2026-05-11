@@ -1,0 +1,91 @@
+# chillcraft_lint
+
+Regolith filter that validates your Behavior Pack and Resource Pack against Chillcraft's Minecraft Marketplace Partner Program compliance rules. Runs at build time and exits with code 1 if any error-level check fails, stopping the pipeline before producing a bad build.
+
+## What it does
+
+Runs 9 checks across BP and RP:
+
+| Check | Severity | What it validates |
+|---|---|---|
+| `manifest-pack-scope` | error | Both manifests have `"pack_scope": "world"` in header |
+| `manifest-product-type` | error | Both manifests have `metadata.product_type = "addon"` |
+| `manifest-dependencies` | error | BP depends on RP's UUID and RP depends on BP's UUID |
+| `no-runtime-identifier` | error | No `runtime_identifier` field in any entity file (Partner Program prohibition) |
+| `namespace-format` | error | Entity IDs use `ns.name` dot notation, block IDs use `ns:name` colon notation, no `minecraft:` vanilla overrides |
+| `texture-paths` | error / warning | No loose files in `textures/` root, no vanilla directory overrides, custom textures in `textures/chillcraft/{project}/` |
+| `no-experimental` | error | No `use_beta_features: true`, no experimental capabilities, no `is_experimental: true` in entity files |
+| `file-count-limit` | warning → error | Total BP + RP file count stays under 3,500 (warns at 3,150) |
+| `size-limit` | warning → error | Total BP + RP size stays under 25 MB (warns at 22.5 MB) |
+
+Errors stop the build (`exit 1`). Warnings are printed but do not stop it.
+
+## Configuration
+
+Create `data/chillcraft_lint.json` in your project:
+
+```json
+{
+  "namespace": "cc_ft",
+  "project": "my_project"
+}
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `namespace` | Recommended | Identifier prefix used in entity and block IDs (e.g. `cc_ft`) |
+| `project` | Recommended | Project slug used in texture paths (e.g. `my_project`) |
+
+Without `namespace`, the `namespace-format` check emits a warning and skips. Without `project`, the texture path specificity check skips.
+
+## Installation
+
+```json
+"filterDefinitions": {
+    "chillcraft_lint": {
+        "url": "github.com/innova67/regolith-filters/chillcraft_lint",
+        "version": "1.0.0"
+    }
+}
+```
+
+Then run:
+
+```sh
+regolith install-all
+```
+
+## Usage
+
+Add the filter to your profile. Place it **first** so it catches issues before other filters run:
+
+```json
+"filters": [
+    {
+        "filter": "chillcraft_lint"
+    }
+]
+```
+
+This filter takes no per-filter settings — all configuration goes in `data/chillcraft_lint.json`.
+
+## Output
+
+```
+[ERROR] manifest-pack-scope: BP manifest requiere "pack_scope": "world" en header (C:\...\BP\manifest.json)
+[ERROR] no-runtime-identifier: runtime_identifier encontrado — prohibido en Partner Program (C:\...\BP\entities\zombie.json)
+[WARNING] size-limit: Tamaño total del addon: 23.10 MB (92.4% del límite de 25 MB)
+
+chillcraft_lint: 2 error(es), 1 warning(s)
+```
+
+Or on a clean project:
+
+```
+[OK] chillcraft_lint: todos los checks pasaron
+```
+
+## Requirements
+
+- Node.js 18+
+- Regolith with `nodejs` runner support
