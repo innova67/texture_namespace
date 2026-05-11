@@ -24,17 +24,17 @@ exports.namespaceFormat = {
             return issues;
         }
         const ns = ctx.namespace;
-        // BP entities: identifier usa punto → "cc_ft.nombre"
+        // BP entities: identifier usa dos puntos → "cc_ft:nombre"
         const bpEntities = (0, utils_1.walkDir)(path.join(ctx.bpDir, "entities")).filter((f) => f.endsWith(".json"));
         for (const file of bpEntities) {
             const id = extractIdentifier((0, utils_1.readJson)(file), "minecraft:entity", "description", "identifier");
             if (!id)
                 continue;
             if (id.startsWith("minecraft:")) {
-                issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace "minecraft:" — debe usar "${ns}."`, path: file });
+                issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace "minecraft:" — debe usar "${ns}:"`, path: file });
             }
-            else if (!id.startsWith(`${ns}.`)) {
-                issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace incorrecto "${id}" — esperado "${ns}.{nombre}"`, path: file });
+            else if (!id.startsWith(`${ns}:`)) {
+                issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace incorrecto "${id}" — esperado "${ns}:{nombre}"`, path: file });
             }
         }
         // RP client entities: mismo identifier
@@ -44,10 +44,10 @@ exports.namespaceFormat = {
             if (!id)
                 continue;
             if (id.startsWith("minecraft:")) {
-                issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace "minecraft:" — debe usar "${ns}."`, path: file });
+                issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace "minecraft:" — debe usar "${ns}:"`, path: file });
             }
-            else if (!id.startsWith(`${ns}.`)) {
-                issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace incorrecto "${id}" — esperado "${ns}.{nombre}"`, path: file });
+            else if (!id.startsWith(`${ns}:`)) {
+                issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace incorrecto "${id}" — esperado "${ns}:{nombre}"`, path: file });
             }
         }
         // BP blocks: identifier usa dos puntos → "cc_ft:nombre"

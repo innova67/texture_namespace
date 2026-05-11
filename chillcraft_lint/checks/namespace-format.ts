@@ -27,15 +27,15 @@ export const namespaceFormat: Check = {
 
     const ns = ctx.namespace;
 
-    // BP entities: identifier usa punto → "cc_ft.nombre"
+    // BP entities: identifier usa dos puntos → "cc_ft:nombre"
     const bpEntities = walkDir(path.join(ctx.bpDir, "entities")).filter((f) => f.endsWith(".json"));
     for (const file of bpEntities) {
       const id = extractIdentifier(readJson(file), "minecraft:entity", "description", "identifier");
       if (!id) continue;
       if (id.startsWith("minecraft:")) {
-        issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace "minecraft:" — debe usar "${ns}."`, path: file });
-      } else if (!id.startsWith(`${ns}.`)) {
-        issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace incorrecto "${id}" — esperado "${ns}.{nombre}"`, path: file });
+        issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace "minecraft:" — debe usar "${ns}:"`, path: file });
+      } else if (!id.startsWith(`${ns}:`)) {
+        issues.push({ checkId: ID, severity: "error", message: `Entidad usa namespace incorrecto "${id}" — esperado "${ns}:{nombre}"`, path: file });
       }
     }
 
@@ -45,9 +45,9 @@ export const namespaceFormat: Check = {
       const id = extractIdentifier(readJson(file), "minecraft:client_entity", "description", "identifier");
       if (!id) continue;
       if (id.startsWith("minecraft:")) {
-        issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace "minecraft:" — debe usar "${ns}."`, path: file });
-      } else if (!id.startsWith(`${ns}.`)) {
-        issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace incorrecto "${id}" — esperado "${ns}.{nombre}"`, path: file });
+        issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace "minecraft:" — debe usar "${ns}:"`, path: file });
+      } else if (!id.startsWith(`${ns}:`)) {
+        issues.push({ checkId: ID, severity: "error", message: `Client entity usa namespace incorrecto "${id}" — esperado "${ns}:{nombre}"`, path: file });
       }
     }
 
