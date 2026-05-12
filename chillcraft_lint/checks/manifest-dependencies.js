@@ -15,7 +15,7 @@ exports.manifestDependencies = {
         const bp = (0, utils_1.readManifest)(bpPath);
         const rp = (0, utils_1.readManifest)(rpPath);
         if (!bp || !rp)
-            return issues; // ya reportado por manifest-pack-scope
+            return issues;
         const bpUuid = bp.header?.uuid;
         const rpUuid = rp.header?.uuid;
         if (!bpUuid || !rpUuid) {

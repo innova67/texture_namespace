@@ -17,7 +17,7 @@ exports.manifestProductType = {
             const manifestPath = path.join(dir, "manifest.json");
             const manifest = (0, utils_1.readManifest)(manifestPath);
             if (!manifest)
-                continue; // ya reportado por manifest-pack-scope
+                continue;
             if (manifest.metadata?.product_type !== "addon") {
                 issues.push({ checkId: ID, severity: "error", message: `${label} manifest requiere "metadata": { "product_type": "addon" }`, path: manifestPath });
             }
