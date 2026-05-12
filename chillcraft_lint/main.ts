@@ -26,17 +26,28 @@ interface LintConfig {
   project: string | null;
 }
 
-function readLintConfig(dataDir: string): LintConfig {
+function parseConfig(raw: unknown): LintConfig {
+  if (typeof raw !== "object" || raw === null) return { namespace: null, project: null };
+  const cfg = raw as Record<string, unknown>;
+  return {
+    namespace: typeof cfg["namespace"] === "string" ? cfg["namespace"] : null,
+    project: typeof cfg["project"] === "string" ? cfg["project"] : null,
+  };
+}
+
+function readSettings(): LintConfig {
+  try {
+    return parseConfig(JSON.parse(process.argv[2] ?? "null"));
+  } catch {
+    return { namespace: null, project: null };
+  }
+}
+
+function readFileConfig(dataDir: string): LintConfig {
   const configPath = path.join(dataDir, "chillcraft_lint.json");
   if (!fs.existsSync(configPath)) return { namespace: null, project: null };
   try {
-    const raw = JSON.parse(fs.readFileSync(configPath, "utf8")) as unknown;
-    if (typeof raw !== "object" || raw === null) return { namespace: null, project: null };
-    const cfg = raw as Record<string, unknown>;
-    return {
-      namespace: typeof cfg["namespace"] === "string" ? cfg["namespace"] : null,
-      project: typeof cfg["project"] === "string" ? cfg["project"] : null,
-    };
+    return parseConfig(JSON.parse(fs.readFileSync(configPath, "utf8")));
   } catch {
     return { namespace: null, project: null };
   }
@@ -45,7 +56,11 @@ function readLintConfig(dataDir: string): LintConfig {
 function main(): void {
   const cwd = process.cwd();
   const dataDir = path.join(cwd, "data");
-  const { namespace, project } = readLintConfig(dataDir);
+
+  const settings = readSettings();
+  const fileConfig = readFileConfig(dataDir);
+  const namespace = settings.namespace ?? fileConfig.namespace;
+  const project = settings.project ?? fileConfig.project;
 
   const ctx: LintContext = {
     bpDir: path.join(cwd, "BP"),

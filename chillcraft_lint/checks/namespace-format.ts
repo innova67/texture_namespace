@@ -21,7 +21,7 @@ export const namespaceFormat: Check = {
     const issues: LintIssue[] = [];
 
     if (!ctx.namespace) {
-      issues.push({ checkId: ID, severity: "warning", message: "namespace no configurado en data/chillcraft_lint.json — check omitido" });
+      issues.push({ checkId: ID, severity: "warning", message: 'namespace no configurado — agrega "namespace" en los settings del filtro o en data/chillcraft_lint.json' });
       return issues;
     }
 

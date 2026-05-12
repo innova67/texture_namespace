@@ -22,13 +22,18 @@ Errors stop the build (`exit 1`). Warnings are printed but do not stop it.
 
 ## Configuration
 
-Create `data/chillcraft_lint.json` in your project:
+Pass settings directly in your Regolith profile:
 
 ```json
-{
-  "namespace": "cc_ft",
-  "project": "my_project"
-}
+"filters": [
+    {
+        "filter": "chillcraft_lint",
+        "settings": {
+            "namespace": "cc_ft",
+            "project": "my_project"
+        }
+    }
+]
 ```
 
 | Field | Required | Description |
@@ -37,6 +42,8 @@ Create `data/chillcraft_lint.json` in your project:
 | `project` | Recommended | Project slug used in texture paths (e.g. `my_project`) |
 
 Without `namespace`, the `namespace-format` check emits a warning and skips. Without `project`, the texture path specificity check skips.
+
+As a fallback, values can also be provided in `data/chillcraft_lint.json` — settings in the profile take priority.
 
 ## Installation
 
@@ -62,12 +69,14 @@ Add the filter to your profile. Place it **first** so it catches issues before o
 ```json
 "filters": [
     {
-        "filter": "chillcraft_lint"
+        "filter": "chillcraft_lint",
+        "settings": {
+            "namespace": "cc_ft",
+            "project": "my_project"
+        }
     }
 ]
 ```
-
-This filter takes no per-filter settings — all configuration goes in `data/chillcraft_lint.json`.
 
 ## Output
 

@@ -4,7 +4,11 @@
     {
       "name": "chillcraft_lint",
       "runWith": "nodejs",
-      "script": "main.js"
+      "script": "main.js",
+      "settings": {
+        "namespace": "cc_xxx",
+        "project": "xxx"
+      }
     }
   ]
 }
