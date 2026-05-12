@@ -1,0 +1,6 @@
+{
+  "type": "commonjs",
+  "dependencies": {
+    "typescript": "^5.0.0"
+  }
+}

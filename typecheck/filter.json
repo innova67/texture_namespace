@@ -1,0 +1,10 @@
+{
+  "description": "Runs TypeScript type checking (tsc --noEmit) on the project before esbuild transpiles. Stops the pipeline if type errors are found.",
+  "filters": [
+    {
+      "name": "typecheck",
+      "runWith": "nodejs",
+      "script": "typecheck.js"
+    }
+  ]
+}
