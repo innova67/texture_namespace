@@ -13,9 +13,16 @@ exports.texturePaths = {
         const texturesRoot = path.join(ctx.rpDir, "textures");
         if (!fs.existsSync(texturesRoot))
             return issues;
-        // Archivos sueltos en la raíz de textures/ están prohibidos
+        // Bedrock engine JSON files that must live at textures/ root — never flag these
+        const BEDROCK_ROOT_FILES = new Set([
+            "terrain_texture.json",
+            "item_texture.json",
+            "flipbook_textures.json",
+            "textures_list.json",
+        ]);
+        // Archivos sueltos en la raíz de textures/ están prohibidos (salvo JSONs del engine de Bedrock)
         for (const entry of fs.readdirSync(texturesRoot, { withFileTypes: true })) {
-            if (entry.isFile()) {
+            if (entry.isFile() && !BEDROCK_ROOT_FILES.has(entry.name)) {
                 issues.push({
                     checkId: ID,
                     severity: "error",
