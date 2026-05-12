@@ -221,11 +221,12 @@ def run(context=None):
             "loot_tables",
             "trading",
             "scripts",
-            "structures", 
+            "structures",
             "texts",
             "feature_rules",
             "features",
             "biomes",
+            "functions",
         ]
         
         # Check for behavior directory
@@ -260,7 +261,10 @@ def run(context=None):
         rp_ignored_files = [
             "manifest.json",
             "sounds.json",
-            "blocks.json"
+            "blocks.json",
+            "biomes_client.json",
+            "_ui_defs.json",
+            "music_definitions.json",
         ]
         
         # Process RP directory
